@@ -286,11 +286,9 @@ int MainMenu(Position p)
     char surname[20]={0};
     char str[20]="0";
     int birthYear=0;
-    int temp=1;
     
     while(1)
     {
-        temp=1;
         printf("\n1 -> Add a new person to the list\n"
                 "2 -> Delete someone from the list\n"
                 "3 -> Check if someone is on the list\n"
@@ -306,7 +304,7 @@ int MainMenu(Position p)
         {
             case 1:
             {
-                while(temp)
+                while(action!=4)
                 {
                     printf("\n1 -> Add to the beginning\n"
                             "2 -> Add to the end\n"
@@ -362,7 +360,6 @@ int MainMenu(Position p)
                         }
                         case 4:
                         {
-                            temp=0;
                             break;
                         }
                         default:
