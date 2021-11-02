@@ -287,9 +287,8 @@ int MainMenu(Position p)
     char str[20]="0";
     int birthYear=0;
     int temp=1;
-    int OnOff=1;
     
-    while(OnOff)
+    while(1)
     {
         temp=1;
         printf("\n1 -> Add a new person to the list\n"
@@ -426,8 +425,7 @@ int MainMenu(Position p)
             }
             case 9:
             {
-                OnOff=0;
-                break;
+                return 0;
             }
             default:
             {
@@ -437,7 +435,7 @@ int MainMenu(Position p)
         }
     }
     
-    return 0;
+    return 0; 
 }
 
 int main ()
