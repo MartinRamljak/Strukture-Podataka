@@ -197,7 +197,11 @@ int CalculatePostfixFromFile(double* resultDestination)
     char operation = 0;
     StackElement head ={.next = NULL, .number=0};
     
-    ReadPostfixFromFile(&buffer);
+    status=ReadPostfixFromFile(&buffer);
+    if(status!=0)
+    {
+        return -2;
+    }
     
     currentBuffer = buffer;
     
@@ -240,8 +244,9 @@ int CalculatePostfixFromFile(double* resultDestination)
     
     if(head.next)
     {
+        DeleteAll(&head);
         printf("Invalid postfix. Please check file.\n");
-        return -5;
+        return -6;
     }
     
     return 0;
