@@ -17,6 +17,7 @@ int DeleteAfter(Pointer p);
 int Pop(double* resultDestination, Pointer head);
 int PerformOperation(Pointer head, char operation);
 int CalculatePostfixFromFile(double* resultDestination);
+int ReadPostfixFromFile(char** buffer);
 int DeleteAll(Pointer head);
 int Menu();
 
@@ -187,46 +188,16 @@ int PerformOperation(Pointer head, char operation)
 }
 
 int CalculatePostfixFromFile(double* resultDestination)
-{int t=0;
-    FILE* f=NULL;
-    int fileLenght=0;
+{
     char* buffer=NULL;
     char* currentBuffer =NULL;
-    char temp[50]={0};
     int numBytes = 0;
     int status = 0;
     double number = 0;
     char operation = 0;
     StackElement head ={.next = NULL, .number=0};
     
-    while(1)
-    {
-        printf("Enter the name of the .txt file you wish to read from:\n");
-        scanf(" %s", temp);
-        if(strlen(temp)>4&&strcmp(&temp[strlen(temp)-4],".txt"))
-            strcat(temp, ".txt");
-        f=fopen(temp, "r");
-        if(!f)
-        {
-            printf("Couldn't open file. Check file name and try again.\n");
-        }
-        else    
-            break;
-    }
-    
-    fseek(f, 0, SEEK_END);
-    fileLenght = ftell(f);
-    
-    buffer = (char*)calloc(fileLenght+1, sizeof(char));
-    if(!buffer)
-    {
-        perror("Couldn't allocate memory.\n");
-        return -2;
-    }
-    
-    rewind(f);
-    fread(buffer, sizeof(char), fileLenght, f);
-    fclose(f);
+    ReadPostfixFromFile(&buffer);
     
     currentBuffer = buffer;
     
@@ -272,6 +243,45 @@ int CalculatePostfixFromFile(double* resultDestination)
         printf("Invalid postfix. Please check file.\n");
         return -5;
     }
+    
+    return 0;
+}
+
+int ReadPostfixFromFile(char** buffer)
+{
+    FILE* f=NULL;
+    int fileLenght=0;
+    char temp[50]={0};
+    
+    while(1)
+    {
+        printf("Enter the name of the .txt file you wish to read from:\n");
+        scanf(" %s", temp);
+        if(strlen(temp)>4&&strcmp(&temp[strlen(temp)-4],".txt"))
+            strcat(temp, ".txt");
+        f=fopen(temp, "r");
+        if(!f)
+        {
+            printf("Couldn't open file. Check file name and try again.\n");
+        }
+        else    
+            break;
+    }
+    
+    while(fgetc(f)!=EOF)
+        fileLenght++;
+    
+    *buffer = (char*)calloc(fileLenght+1, sizeof(char));
+    if(!(*buffer))
+    {
+        perror("Couldn't allocate memory.\n");
+        return -2;
+    }
+    
+    rewind(f);
+    fread(*buffer, sizeof(char), fileLenght, f);
+    
+    fclose(f);
     
     return 0;
 }
